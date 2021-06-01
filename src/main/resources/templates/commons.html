@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    </meta>
+</head>
+
+<body>
+
+<header id="header" class="header header-section" th:fragment="nav">
+    <div class="container">
+        <div class="logo">
+            <a href="/" class="nav-title">
+                Главная
+            </a>
+        </div>
+        <div class="nav-menu">
+            <nav class="mainmenu mobile-menu">
+                <ul>
+                    <li><a href="/user" th:if="${#request.userPrincipal !=null && #request.isUserInRole('ROLE_ADMIN')}">Пользователи</a></li>
+                    <li><a href="/event">Мероприятия</a></li>
+                    <li><a href="/category" th:if="${#request.userPrincipal !=null && #request.isUserInRole('ROLE_ADMIN')}">Категории</a></li>
+                    <li><a href="/history" th:if="${#request.userPrincipal !=null && #request.isUserInRole('ROLE_USER')}">История</a></li>
+                    <li><a href="/login" th:if="${#request.userPrincipal ==null}">Вход и регистрация</a></li>
+                    <li><a href="/logout" th:if="${#request.userPrincipal !=null}">Выход</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+    </div>
+</header>
+
+
+<footer class="footer-section" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="footer-text">
+                    <ul>
+                        <li><a href="/index">Главная</a></li>
+                        <li><a href="/user" th:if="${#request.userPrincipal !=null && #request.isUserInRole('ROLE_ADMIN')}">Пользователи</a></li>
+                        <li><a href="/event">Мероприятия</a></li>
+                        <li><a href="/category" th:if="${#request.userPrincipal !=null && #request.isUserInRole('ROLE_ADMIN')}">Категории</a></li>
+                        <li><a href="/history" th:if="${#request.userPrincipal !=null && #request.isUserInRole('ROLE_USER')}">История</a></li>
+                        <li><a href="/login" th:if="${#request.userPrincipal ==null}">Вход и регистрация</a></li>
+                        <li><a href="/logout" th:if="${#request.userPrincipal !=null}">Выход</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Js Plugins -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
+</footer>
+
+
+
+
+
+<div id="richTextEditor" class="richTextEditor" th:fragment="richTextEditor">
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
+    <textarea id="editor" name="description" th:utext="${entity.description}">
+	      Hello, World!
+    	</textarea>
+    <input type="submit" th:value="Отправить" class="myButton">
+    <script>
+        tinymce
+            .init({
+                selector: '#editor',
+                plugins: 'image code',
+                toolbar: 'undo redo | link image | code',
+                image_title: true,
+                automatic_uploads: true,
+                tinycomments_author: 'Yauhescha',
+                file_picker_types: 'image',
+                file_picker_callback: function (cb, value, meta) {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+
+                    input.onchange = function () {
+                        var file = this.files[0];
+
+                        var reader = new FileReader();
+                        reader.onload = function () {
+                            var id = 'blobid' + (new Date()).getTime();
+                            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                            var base64 = reader.result.split(',')[1];
+                            var blobInfo = blobCache.create(id, file,
+                                base64);
+                            blobCache.add(blobInfo);
+
+                            cb(blobInfo.blobUri(), {
+                                title: file.name
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    };
+                    input.click();
+                },
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+            });
+        window.onload = function () {
+            document.querySelector('#richTextEditor div ').style.height = '400px';
+        };
+    </script>
+</div>
+
+
+
+
+
+<div class="speaker-item"th:fragment="eventList">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="si-pic">
+                <img th:src="${entity.image}">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="si-text">
+                <div class="si-title">
+                    <h4 th:text="${entity.name}">Название мероприятия</h4>
+                    <span th:text="${entity.date}+' '+${entity.time}">25.05.2005</span>
+                    <span th:text="${entity.category.name}">Category</span>
+                </div>
+                <div class="">
+                    <a class="primary-btn top-btn w-100 m-2" th:href="'/event/id/' + ${entity.id}" >Подробнее</a>
+                    <a class="primary-btn top-btn w-100 m-2" th:href="'/event/edit/' + ${entity.id}" th:if="${#request.userPrincipal!= null && #request.isUserInRole('ROLE_ADMIN')}">Редактировать</a>
+                    <a class="primary-btn top-btn w-100 m-2" th:href="'/event/delete/' + ${entity.id}" th:if="${#request.userPrincipal!= null && #request.isUserInRole('ROLE_ADMIN')}">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>

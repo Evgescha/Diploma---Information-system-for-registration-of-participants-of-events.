@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${entity.name}">Мероприятие</title>
+    <div th:replace="~{commons :: head}"></div>
+</head>
+
+<body>
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<div th:replace="~{commons :: nav}"></div>
+
+
+<section class="blog-details-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 m-auto">
+                <div class="bd-text">
+                    <h1 th:text="${entity.name}">EVENT NAME</h1>
+                    <h3 th:text="${entity.category.name}">EVENT CATEGORY</h3>
+                    <div th:text="'Дата проведения мероприятия: ' + ${entity.date}"></div>
+                    <div th:text="'Время проведения мероприятия: ' + ${entity.time}"></div>
+                    <img th:src="${entity.image}">
+                    <div class="bd-title">
+                        <p th:utext="${entity.description}">TEXT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#request.userPrincipal!= null && #request.isUserInRole('ROLE_USER') && entity.date >= currentDate}" style="text-align: center">
+        <div th:if="${isHaveEvent}">
+            <a th:href="'/event/removeEvent/'+${entity.id}" class="primary-btn top-btn">Отказатья от участия</a>
+        </div>
+        <div th:if="${!isHaveEvent}">
+            <a th:href="'/event/addEvent/'+${entity.id}" class="primary-btn top-btn">Участвую!</a>
+        </div>
+    </div>
+</section>
+
+
+<section class="list" th:if="${#request.userPrincipal!= null && #request.isUserInRole('ROLE_ADMIN')}">
+    <div class="container my-2">
+        <div class="card">
+            <div class="row">
+                <div class="card-body col">
+                    <h2 class="text-center"> Пользователи, выбравщие данное мероприятие</h2>
+                    <h4 class="text-center" th:text="'Количество пользователей: ' + ${#lists.size(entity.users)}"> КОЛИЧЕСТВО ПОЛЬЗОВАТЕЛЕЙ</h4>
+                    <div th:switch="${entity.users}" class="container my-5">
+                        <div class="col-md-12">
+                            <h2 th:case="null"> Записей не найдено </h2>
+                            <div th:case="*" class="overScroll">
+                                <table class="table table-striped table-responsive-md">
+                                    <thead>
+                                    <tr>
+                                        <th>ФИО</th>
+                                        <th>Почта</th>
+                                        <th>Телефон</th>
+                                        <th>Дата рождения</th>
+                                        <th>Логин</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user : ${entity.users}">
+                                        <td th:text="${user.fio}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td th:text="${user.phone}"></td>
+                                        <td th:text="${user.dateBorn}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td class="btnInTable widthLastCol">
+                                            <a th:href="@{/history/get/{id}(id=${user.id})}" class="btn btn-primary">
+                                                История
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="related-post-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Тебе могут быть интересны будущие мероприятия</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" th:each="entity: ${list}">
+                <div th:replace="~{commons :: eventList}"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div th:replace="~{commons :: footer}"></div>
+
+</body>
+
+</html>

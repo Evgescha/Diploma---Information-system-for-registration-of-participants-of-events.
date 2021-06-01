@@ -1,0 +1,125 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+    <title>Вход в систему</title>
+    <div th:replace="~{commons :: head}"></div>
+
+</head>
+
+<body>
+<div th:replace="~{commons :: nav}"></div>
+
+<section id="content">
+    <div class="login-content">
+        <div class="container">
+            <div class="row">
+                <div class="page_header text-center">
+                    <h2>Аккаунт</h2>
+                    <p>Войдите для полного доступа</p>
+                    <h3 th:if="${success}" class="text-center" th:text="${success}">
+                        Ошибка регистрации. Проверьте уникальность имени и попробуйте еще раз
+                    </h3>
+                </div>
+                <div class="col-md-12">
+                    <div class="row shop-login">
+                        <div class="col-md-6">
+                            <div class="box-content">
+                                <h3 class="heading text-center">Я уже регистрировался</h3>
+                                <div class="clearfix space40"></div>
+                                <form class="logregform" action="/login" method="post">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Логин</label>
+                                                <input type="text" name="username" class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix space20"></div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Пароль</label>
+                                                <input type="password" name="password" class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix space20"></div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="submit" class="primary-btn top-btn w-100">Войти</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-content">
+                                <h3 class="heading text-center">Регистрация</h3>
+                                <div class="clearfix space40"></div>
+                                <form class="logregform" action="/registration" method="post">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Введите ФИО</label>
+                                                <input type="text" name="fio" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Дату рождения</label>
+                                                <input type="date" name="dateBorn" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Введите номер телефона</label>
+                                                <input type="text" name="phone" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Введите адрес электронной почты</label>
+                                                <input type="email" name="email" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Введите логин</label>
+                                                <input type="text" name="username" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix space20"></div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Пароль</label>
+                                                <input type="password" name="password" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="space20"></div>
+                                            <button type="submit" class="primary-btn top-btn w-100">Регистрация</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div th:replace="~{commons :: footer}"></div>
+</body>
+
+</html>

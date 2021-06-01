@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Добавить/Редактировать</title>
+    <div th:replace="~{commons :: head}"></div>
+    <script src="/js/tinymce.min.js"></script>
+</head>
+<body>
+<div th:replace="~{commons :: nav}"></div>
+<section class="edit">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2 class="text-center">Мероприятие</h2>
+                <form th:action="@{/event/create}" th:object="${entity}" method="post" class="register">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th><label class="mx-2">Название</label></th>
+                            <td><input type="text" th:field="*{name}" class="form-control" required/></td>
+                        </tr>
+
+                        <tr>
+                            <th><label class="mx-2">Дата проведения</label></th>
+                            <td><input type="date" th:field="*{date}" class="form-control" required/></td>
+                        </tr>
+
+                        <tr>
+                            <th><label class="mx-2">Время проведения</label></th>
+                            <td><input type="time" th:value="${entity.time}" class="form-control" required name="times"/></td>
+                        </tr>
+                        <tr>
+                            <th><label class="mx-2">Ссылка на изображение</label></th>
+                            <td><input type="text" th:field="*{image}" class="form-control" required/></td>
+                        </tr>
+                        <tr>
+                            <th><label class="mx-2">Категория</label></th>
+                            <td>
+                                <select name="catId" id="catId" required>
+                                    <option th:if="${entity.category==null}" name="catId" th:each="cat : ${categories}"
+                                            th:value="${cat.id}" th:text="${cat}"
+                                            th:selected="${entity.category==cat}"
+                                    ></option>
+                                    <option th:if="${entity.category!=null}" name="catId" th:each="cat : ${categories}"
+                                            th:value="${cat.id}" th:text="${cat}"
+                                            th:selected="${entity.category.id==cat.id}"
+                                    ></option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div th:replace="~{commons :: richTextEditor}"></div>
+                    <p class="my-5 justify-content-between d-flex">
+                        <input type="hidden" id="id" th:field="*{id}">
+                        <input type="button" class="btn btn-primary" value=" Назад " onclick="history.back()"/>
+<!--                        <input type="submit" class="btn btn-primary" value=" Отправить ">-->
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="~{commons :: footer}"></div>
+</body>
+</html>
